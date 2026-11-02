@@ -1,0 +1,716 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Blood Test At Your Door</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap">
+<style>
+/* Layout: one calm column on phones; on desktop the test list sits beside a sticky running total, with the details form below. Large type, big tap targets, soft mint-to-sky gradient. */
+:root{
+  --font-body:'Hind Siliguri',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-head:'Outfit','Hind Siliguri',system-ui,sans-serif;
+  --bg-solid:#e9f5f3;
+  --bg-grad:linear-gradient(155deg,#e2f5f0 0%,#e7f1fb 55%,#eeeafa 100%);
+  --card:rgba(255,255,255,.9);
+  --solid:#ffffff;
+  --card-border:#d6e8e5;
+  --ink:#14302e;
+  --ink-soft:#4d6866;
+  --line:#cfe1de;
+  --accent:#0f766e;
+  --accent-ink:#ffffff;
+  --accent-soft:#dff3ee;
+  --accent-strong:#0b4f4a;
+  --danger:#b3261e;
+  --ok:#166a45;
+  --focus:#2a6fdb;
+  --shadow:0 10px 32px rgba(20,70,66,.09);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg-solid:#0d1a1d;
+    --bg-grad:linear-gradient(155deg,#0f2224 0%,#0f1e2c 55%,#181b2e 100%);
+    --card:rgba(20,38,42,.92);
+    --solid:#132428;
+    --card-border:#26413f;
+    --ink:#e5f3f1;
+    --ink-soft:#a5c0bd;
+    --line:#2b4745;
+    --accent:#4fd1c0;
+    --accent-ink:#052420;
+    --accent-soft:#17403d;
+    --accent-strong:#a2eadf;
+    --danger:#ff8f86;
+    --ok:#74dba7;
+    --focus:#8ab4ff;
+    --shadow:0 10px 32px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg-solid:#0d1a1d;
+  --bg-grad:linear-gradient(155deg,#0f2224 0%,#0f1e2c 55%,#181b2e 100%);
+  --card:rgba(20,38,42,.92);
+  --solid:#132428;
+  --card-border:#26413f;
+  --ink:#e5f3f1;
+  --ink-soft:#a5c0bd;
+  --line:#2b4745;
+  --accent:#4fd1c0;
+  --accent-ink:#052420;
+  --accent-soft:#17403d;
+  --accent-strong:#a2eadf;
+  --danger:#ff8f86;
+  --ok:#74dba7;
+  --focus:#8ab4ff;
+  --shadow:0 10px 32px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background-color:var(--bg-solid);
+  background-image:var(--bg-grad);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  color:var(--ink);
+  font:17px/1.55 var(--font-body);
+  min-height:100%;
+}
+body.has-dock{padding-bottom:92px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Header */
+.top{border-bottom:1px solid var(--card-border);background:var(--card)}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-name{font:700 1.3rem/1.2 var(--font-head)}
+.brand-sub{color:var(--ink-soft);font-size:.92rem}
+.top-note{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);font-weight:500;font-size:.95rem}
+
+/* Hero */
+.hero{padding-block:28px 20px}
+h1{font:700 clamp(1.8rem,5vw,2.6rem)/1.15 var(--font-head);margin:0 0 6px;text-wrap:balance}
+.hero .bn{margin:0 0 10px;font-size:1.25rem;font-weight:500;color:var(--accent-strong)}
+.lead{margin:0;max-width:60ch;color:var(--ink-soft);font-size:1.05rem}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:start}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:24px;box-shadow:var(--shadow);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);min-width:0}
+.sum{position:sticky;top:16px}
+.book{max-width:860px;margin:24px auto 0}
+h2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:600 1.4rem/1.25 var(--font-head);margin:0 0 18px}
+h2 small{font:500 1.05rem var(--font-body);color:var(--ink-soft)}
+.step{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:600 1rem var(--font-head)}
+
+/* Fields */
+.field{display:flex;flex-direction:column;gap:6px;min-width:0;border:0;padding:0;margin:0}
+label,legend{font-weight:600;padding:0}
+label small,legend small{font-weight:400;color:var(--ink-soft)}
+input[type=text],input[type=search],input[type=tel],input[type=date],select,textarea{
+  width:100%;min-height:52px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--solid);font-size:1.05rem}
+textarea{resize:vertical;min-height:96px}
+input[aria-invalid="true"],textarea[aria-invalid="true"],.phone[data-invalid="true"]{border-color:var(--danger)}
+.phone{display:flex;border:1.5px solid var(--line);border-radius:12px;background:var(--solid);overflow:hidden}
+.phone:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.phone span{display:flex;align-items:center;padding:0 14px;background:var(--accent-soft);color:var(--accent-strong);font-weight:600}
+.phone input{border:0;border-radius:0;background:transparent;flex:1;min-width:0}
+.phone input:focus-visible{outline:none}
+.err{margin:0;min-height:1.3em;color:var(--danger);font-size:.95rem}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
+.full{grid-column:1/-1}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.opts legend{grid-column:1/-1;margin-bottom:6px}
+.opt{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--solid);font-weight:500;cursor:pointer}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt input{width:22px;height:22px;accent-color:var(--accent);flex:none;margin:0}
+.opt small{display:block;color:var(--ink-soft);font-weight:400}
+
+/* Chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.chip{min-height:42px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--solid);cursor:pointer;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.count-line{margin:16px 0 12px;color:var(--ink-soft);font-size:.95rem}
+.filters{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px}
+.more{width:100%;margin-top:14px}
+
+/* Test list */
+.list{display:grid;gap:10px}
+.test{display:flex;align-items:center;gap:12px;padding:12px 14px 12px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--solid);cursor:pointer}
+.test.on{border-color:var(--accent);background:var(--accent-soft)}
+.t-main{flex:1;min-width:0}
+.t-name{font-weight:600;font-size:1.06rem;line-height:1.35}
+.t-sub{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-top:2px}
+.t-price{font:600 1.2rem var(--font-head);font-variant-numeric:tabular-nums}
+.t-meta{color:var(--ink-soft);font-size:.9rem}
+.add{flex:none;min-height:46px;min-width:92px;padding:0 14px;border-radius:12px;border:1.5px solid var(--accent);background:transparent;color:var(--accent-strong);font-weight:600;cursor:pointer}
+.test.on .add{background:var(--accent);color:var(--accent-ink)}
+.empty{margin:0 0 14px;padding:16px;border-radius:12px;background:var(--accent-soft);color:var(--accent-strong)}
+
+/* Total */
+.sel{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px;max-height:36vh;overflow:auto}
+.sel li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 12px;border-radius:12px;background:var(--accent-soft)}
+.sel .n{flex:1;min-width:0;font-weight:500}
+.sel .p{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rm{border:0;background:none;color:var(--danger);font-size:.92rem;text-decoration:underline;min-height:40px;padding:0 6px;cursor:pointer}
+.totals{display:grid;gap:6px;padding-top:14px;border-top:1.5px dashed var(--line);margin-bottom:16px}
+.trow{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.trow strong{font-variant-numeric:tabular-nums}
+.grand span{font-weight:600;font-size:1.1rem}
+.grand strong{font:700 2.1rem/1.1 var(--font-head);color:var(--accent-strong)}
+.note{margin:8px 0 0;color:var(--ink-soft);font-size:.9rem}
+.link{border:0;background:none;color:var(--ink-soft);text-decoration:underline;min-height:44px;cursor:pointer;margin-top:4px}
+.link:disabled{display:none}
+a.link{display:inline-flex;align-items:center}
+
+/* Buttons */
+.go{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;padding:0 22px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:600 1.15rem var(--font-head),var(--font-body);cursor:pointer;text-decoration:none}
+.go:disabled{opacity:.45;cursor:not-allowed}
+.ghost{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:14px;border:1.5px solid var(--accent);background:transparent;color:var(--accent-strong);font-weight:600;cursor:pointer;text-decoration:none}
+.submit-row{display:grid;gap:10px;margin-top:22px}
+.sub-sum{margin:0;font-weight:600;text-align:center}
+
+/* Confirmation */
+.done-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:8px}
+.done-head h3{margin:0;font:600 1.4rem var(--font-head)}
+.ref{padding:4px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);font:600 .95rem var(--font-head);letter-spacing:.04em}
+.done p{margin:0 0 14px}
+.dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 16px;margin:0 0 16px;padding:16px;border-radius:14px;background:var(--solid);border:1.5px solid var(--line)}
+.dl dt{color:var(--ink-soft)}
+.dl dd{margin:0;overflow-wrap:anywhere}
+.acts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:16px}
+#raw{margin-top:12px;min-height:160px}
+
+.help{max-width:860px;margin:24px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px}
+.help-txt{flex:1 1 320px;min-width:0}
+.help h2{margin-bottom:8px}
+.help p{margin:0 0 6px;color:var(--ink-soft)}
+.help .bn{color:var(--ink)}
+.help .ghost{flex:none;min-height:58px;padding:0 30px;font-size:1.1rem;font-family:var(--font-head),var(--font-body)}
+.foot{padding-block:28px calc(28px)}
+.foot p{margin:0;color:var(--ink-soft);font-size:.92rem}
+
+/* Phone bottom bar */
+.dock{display:none}
+@media (max-width:899px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .sum{position:static}
+  .dock:not([hidden]){
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+    background:var(--solid);border-top:1px solid var(--card-border);box-shadow:var(--shadow);
+  }
+  .dock .go{width:auto;min-height:52px;flex:none}
+}
+.dock-l{color:var(--ink-soft);font-size:.9rem;line-height:1.2}
+.dock-t{font:700 1.5rem/1.1 var(--font-head);color:var(--accent-strong);font-variant-numeric:tabular-nums}
+@media (max-width:640px){
+  .filters{grid-template-columns:minmax(0,1fr)}
+  .help .ghost{width:100%}
+  .card{padding:18px;border-radius:18px}
+  .fields,.opts{grid-template-columns:minmax(0,1fr)}
+  .dl{grid-template-columns:minmax(0,1fr)}
+  .dl dt{margin-bottom:-6px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <svg width="46" height="46" viewBox="0 0 44 44" role="img" aria-label="Blood drop" style="flex:none"><defs><linearGradient id="bloodGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0505f"/><stop offset="1" stop-color="#b3172b"/></linearGradient></defs><rect x="1" y="1" width="42" height="42" rx="13" fill="var(--solid)" stroke="var(--card-border)" stroke-width="1.5"/><path d="M22 7C27.500 14 32.500 19.500 32.500 26a10.500 10.500 0 0 1-21 0C11.500 19.500 16.500 14 22 7z" fill="url(#bloodGrad)"/><path d="M16.500 26a5.500 5.500 0 0 0 4.200 5.300" fill="none" stroke="#ffffff" stroke-opacity=".8" stroke-width="2.200" stroke-linecap="round"/></svg>
+      <div><div class="brand-name" id="labName"></div><div class="brand-sub" id="labSub"></div></div>
+    </div>
+    <div class="top-note" id="labNote"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Book your tests online</h1>
+    <p class="bn">ঘরে বসে টেস্ট বুক করুন</p>
+    <p class="lead">Choose your tests, see the total cost, then enter your details. It takes about two minutes.</p>
+  </section>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="h-tests">
+      <h2 id="h-tests"><span class="step">1</span>Choose tests <small>টেস্ট বেছে নিন</small></h2>
+      <div class="filters">
+        <div class="field">
+          <label for="search">Search a test <small>(টেস্টের নাম)</small></label>
+          <input id="search" type="search" placeholder="Example: Sugar, Thyroid, Vitamin" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="catSel">Test type <small>(ধরন)</small></label>
+          <select id="catSel"></select>
+        </div>
+      </div>
+      <p class="count-line" id="shown"></p>
+      <div class="list" id="list"></div>
+      <p class="empty" id="emptyList" hidden>No test found. Try a different name, or choose All tests.</p>
+      <button class="ghost more" id="moreBtn" type="button" hidden></button>
+    </section>
+
+    <aside class="card sum" aria-labelledby="h-total">
+      <h2 id="h-total"><span class="step">2</span>Your total <small>মোট খরচ</small></h2>
+      <p class="empty" id="noSel">No test selected yet. Tap <b>Add</b> next to any test.</p>
+      <ul class="sel" id="selList"></ul>
+      <div class="totals">
+        <div class="trow"><span>Tests selected</span><strong id="count">0</strong></div>
+        <div class="trow grand"><span>Total (MRP)</span><strong id="total">₹0</strong></div>
+      </div>
+      <button class="go" id="toDetails" type="button" disabled>Continue to details</button>
+      <button class="link" id="clearAll" type="button" disabled>Clear all tests</button>
+      <p class="note">Prices shown are MRP for each test.</p>
+    </aside>
+  </div>
+
+  <section class="card book" id="details" aria-labelledby="h-details">
+    <h2 id="h-details"><span class="step">3</span>Your details <small>আপনার তথ্য</small></h2>
+    <form id="form" novalidate>
+      <div class="fields">
+        <div class="field">
+          <label for="fname">Full name <small>(নাম)</small></label>
+          <input id="fname" type="text" autocomplete="name">
+          <p class="err" id="e-name" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="fmobile">Mobile number <small>(মোবাইল নম্বর)</small></label>
+          <div class="phone" id="phoneBox"><span>+91</span><input id="fmobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" placeholder="10-digit number"></div>
+          <p class="err" id="e-mobile" aria-live="polite"></p>
+        </div>
+        <div class="field full">
+          <label for="faddr">Address <small>(ঠিকানা)</small></label>
+          <textarea id="faddr" rows="3" autocomplete="street-address" placeholder="House no, road, area, landmark, PIN code"></textarea>
+          <p class="err" id="e-addr" aria-live="polite"></p>
+        </div>
+        <fieldset class="field full opts">
+          <legend>Where should the sample be taken? <small>(নমুনা কোথায় দেবেন)</small></legend>
+          <label class="opt"><input type="radio" name="mode" value="Home collection" checked><span>Home collection<small>ঘরে এসে নমুনা নেবে</small></span></label>
+          <label class="opt"><input type="radio" name="mode" value="Visit the lab"><span>I will visit the lab<small>আমি ল্যাবে যাব</small></span></label>
+        </fieldset>
+        <div class="field">
+          <label for="fdate">Preferred date <small>(তারিখ)</small></label>
+          <input id="fdate" type="date">
+          <p class="err" id="e-date" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="fslot">Preferred time <small>(সময়)</small></label>
+          <select id="fslot"></select>
+          <p class="err"></p>
+        </div>
+      </div>
+      <div class="submit-row">
+        <p class="sub-sum" id="subSum"></p>
+        <a class="go" id="bookBtn" href="#" target="_blank" rel="noopener" role="button">Book now · বুক করুন</a>
+        <p class="err" id="e-tests" role="alert" style="text-align:center"></p>
+      </div>
+    </form>
+    <div class="done" id="done" hidden></div>
+  </section>
+
+  <section class="card help" aria-labelledby="h-help">
+    <div class="help-txt">
+      <h2 id="h-help">Need help? <small>সাহায্য দরকার?</small></h2>
+      <p>Not sure which test you need, or finding something hard to understand? For any other help, call or WhatsApp us.</p>
+      <p class="bn">কোন টেস্ট করাবেন বুঝতে না পারলে, বা অন্য যেকোনো সাহায্যের জন্য কল বা হোয়াটসঅ্যাপ করুন।</p>
+    </div>
+    <a class="ghost" id="helpBtn" href="#" target="_blank" rel="noopener" role="button">Click Help · সাহায্য নিন</a>
+  </section>
+</main>
+
+<footer class="wrap foot"><p id="footTxt"></p></footer>
+
+<div class="dock" id="dock" hidden>
+  <div><div class="dock-l" id="dockL"></div><div class="dock-t" id="dockT"></div></div>
+  <button class="go" id="dockGo" type="button">Enter details</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===== Edit these for your lab ===== */
+var LAB={
+  name:"Blood Test At Your Door",
+  code:"BTD",
+  helpMsg:"Hello, I need help choosing or booking a test.",
+  tagline:"Kolkata's best laboratory service",
+  note:"Home sample collection available",
+  whatsapp:"916294436150",   /* lab WhatsApp number with country code. Never shown on the page. */
+  slots:["Morning, 7 AM to 9 AM","Morning, 9 AM to 11 AM","Late morning, 11 AM to 1 PM"]
+};
+var FAST="Fasting required · খালি পেটে";
+var C={H:"Health Packages",B:"Blood",S:"Sugar",TH:"Thyroid",HL:"Heart & Lipid",LK:"Liver & Kidney",VI:"Vitamins & Iron",FI:"Fever & Infection",HH:"Hepatitis & HIV",HO:"Hormones",WP:"Women & Pregnancy",IM:"Immunology",CM:"Cancer Markers",US:"Urine, Stool & Culture",OT:"Other Tests"};
+var CATS=["H","B","S","TH","HL","LK","VI","FI","HH","HO","WP","IM","CM","US","OT"].map(function(k){return C[k]});
+var TESTS=[];
+function T(c,name,price,note){TESTS.push({id:"t"+TESTS.length,cat:C[c],name:name,price:price,note:note||""})}
+/* Most asked tests first, then the rest of the rate chart. */
+T("H","TruHealth Silver",799);
+T("H","TruHealth Gold",999);
+T("H","TruHealth Platinum",1499);
+T("H","TruHealth Diamond",2299);
+T("B","Haemogram (CBC + ESR)",350);
+T("B","Hemoglobin",110);
+T("S","Fasting Glucose (Plasma)",70,FAST);
+T("S","Glucose, Post Prandial",90);
+T("S","Glucose, Random",90);
+T("S","HbA1c (Glycated Haemoglobin, HPLC)",440);
+T("HL","Lipid Profile - Mini",700,FAST);
+T("LK","Liver Function Test - Mini",780);
+T("LK","Renal (Kidney) Function Test",850);
+T("TH","Thyroid Panel-1 (T3 / T4 / TSH)",500);
+T("TH","TSH (Ultrasensitive)",275);
+T("VI","Vitamin D Total (25-Hydroxy)",1550);
+T("VI","Vitamin B12",1000);
+T("US","Routine Examination, Urine",150);
+T("FI","Dengue NS1 Antigen",600);
+T("FI","Widal Test (Typhoid)",300);
+T("FI","Malarial Antigen (Vivax & Falciparum)",600);
+T("FI","CRP (C Reactive Protein)",425);
+T("IM","ANA by ELISA (Anti Nuclear Antibody screening)",700);
+T("VI","Anaemia Profile - Mini",1800);
+T("IM","Anti Nuclear Antibody by IFA",950);
+T("IM","APA-IgG (Phospholipid Antibody)",900);
+T("IM","APA-IgM (Phospholipid Antibody)",900);
+T("B","APTT (Activated Partial Thromboplastin Time)",500);
+T("FI","ASO Titre (Quantitative)",550);
+T("LK","Bilirubin, Direct",140);
+T("LK","Bilirubin, Total",140);
+T("B","Blood Group ABO & Rh Typing",160);
+T("LK","BUN (Urea Nitrogen)",140);
+T("CM","CA-125",1150);
+T("CM","CA-15.3",1250);
+T("LK","Calcium, Total",240);
+T("IM","Cardiolipin Antibody, ACL-IgA",800);
+T("IM","Cardiolipin Antibody, ACL-IgG",800);
+T("IM","Cardiolipin Antibody, ACL-IgM",800);
+T("IM","Anti CCP Antibody",1350);
+T("CM","CEA (Carcino Embryonic Antigen)",700);
+T("HL","Cholesterol, Total",150);
+T("HL","CK-MB (Mass)",500);
+T("B","Coombs Test, Direct (DAT)",500);
+T("B","Coombs Test, Indirect (IAT)",500);
+T("HO","Cortisol",550);
+T("S","C-Peptide, Fasting",1100,FAST);
+T("HL","CPK Total",300);
+T("LK","Creatinine Clearance Test",450);
+T("LK","Creatinine, Urine 24 Hour",250);
+T("LK","Creatinine, Serum",150);
+T("US","Culture & Sensitivity, Blood (single bottle)",1100);
+T("US","Culture & Sensitivity, Pus",1050);
+T("US","Culture & Sensitivity, Sputum",1050);
+T("US","Culture & Sensitivity, Stool",1050);
+T("US","Culture & Sensitivity, Throat Swab",1050);
+T("US","Culture & Sensitivity, Urine",700);
+T("US","Anaerobic Culture & Identification, Blood (single bottle)",1400);
+T("B","D-Dimer (Quantitative)",1200);
+T("FI","Dengue IgG Antibody",600);
+T("FI","Dengue IgM Antibody",600);
+T("FI","Dengue Profile",2000);
+T("HO","DHEAS",1000);
+T("HO","Estradiol (E2)",600);
+T("LK","Electrolytes",400);
+T("VI","Ferritin",700);
+T("VI","Folic Acid",1100);
+T("HO","FSH (Follicle Stimulating Hormone)",500);
+T("HO","FSH-LH-Prolactin",1300);
+T("US","Gram Stain (Other Samples)",275);
+T("HH","H3 Viral Marker Profile (HIV, HBsAg, HCV)",1700);
+T("HH","HBsAg Screening (Hepacard) - Spot Test",250);
+T("HH","HBV Hepatitis B HBsAg Screening (Surface Antigen)",500);
+T("WP","HCG Beta Subunit",650);
+T("HH","HCV (Tridot) - Spot Test",380);
+T("HH","HCV Total Antibodies (Anti HCV)",1400);
+T("HH","Hepatitis A Virus HAV-IgM Antibody",1190);
+T("HH","Hepatitis E Virus Anti HEV-IgM",1300);
+T("OT","Histopathology (Small Specimen)",800);
+T("HH","HIV (Tridot) - Spot Test",240);
+T("HH","HIV-DUO (p24 Antigen & Antibody HIV 1 & 2)",500);
+T("IM","HLA B27 (Human Leucocyte Antigen B27)",2270);
+T("IM","IgE Total Antibody",830);
+T("S","Insulin, Fasting",800,FAST);
+T("S","Insulin, Post Prandial",980);
+T("IM","Interferon Gamma Release Assay (IGRA)",2550);
+T("IM","Interleukin-6",3200);
+T("VI","Iron Studies",500);
+T("OT","Karyotyping by G-Banding (Peripheral Blood)",4200);
+T("OT","LDH (Lactate Dehydrogenase)",330);
+T("HO","LH (Luteinizing Hormone)",500);
+T("OT","Lipase",625);
+T("OT","Lithium",450);
+T("FI","Malaria Parasite Detection (Smear Examination)",290);
+T("WP","Maternal Screen, Dual Marker (1st Trimester)",2300);
+T("WP","Maternal Screen, Quadruple Test (2nd Trimester)",3000);
+T("WP","Maternal Screen, Triple Test (2nd Trimester)",2950);
+T("WP","NIPT / cfDNA",9500);
+T("LK","URINE ACR",550);
+T("US","Occult Blood, Stool",150);
+T("B","Peripheral Smear Examination",200);
+T("LK","Phosphorus, Inorganic",175);
+T("B","Platelet Count",130);
+T("LK","Potassium (ISE)",175);
+T("FI","Procalcitonin",2700);
+T("HO","Progesterone (P4)",600);
+T("HO","Prolactin",500);
+T("B","Prothrombin Time (PT)",390);
+T("CM","PSA, Free (Prostate Specific Antigen)",900);
+T("CM","PSA, Total (Prostate Specific Antigen)",750);
+T("IM","RA Test (Rheumatoid Arthritis)",450);
+T("US","Reducing Substance, Stool",200);
+T("LK","Renal (Kidney) Function Test, Maxi",1800);
+T("B","Reticulocyte Count (Manual)",350);
+T("US","Routine Examination, Stool",180);
+T("WP","Rubella (German Measles) IgG Antibody",600);
+T("WP","Rubella (German Measles) IgM Antibody",600);
+T("OT","Serum Protein Electrophoresis",725);
+T("LK","SGOT (AST)",160);
+T("LK","SGPT (ALT)",160);
+T("LK","Sodium (ISE)",175);
+T("HO","Testosterone, Total",650);
+T("HO","Testosterone, Free",1500);
+T("TH","Thyroid Panel-2 (FT3, FT4, TSH)",725);
+T("TH","Thyroid Panel-4",400);
+T("VI","TIBC",400);
+T("WP","TORCH-10",3000);
+T("WP","TORCH-5 IgG",1600);
+T("WP","TORCH-5 IgM",1600);
+T("WP","TORCH-8",2600);
+T("WP","Toxoplasma IgG & IgM",1150);
+T("WP","Toxoplasma IgG Antibody",600);
+T("WP","Toxoplasma IgM Antibody",600);
+T("TH","TPO Antibody (Thyroid Peroxidase)",1100);
+T("HL","Triglycerides",290);
+T("IM","tTG Antibody IgA (Celiac Disease)",1320);
+T("FI","Typhi Dot IgM (Typhoid)",600);
+T("LK","Urea, Serum",160);
+T("LK","Uric Acid",175);
+T("FI","VDRL / RPR",200);
+T("B","WBC Total Count",200);
+/* ==================================== */
+
+function $(s){return document.querySelector(s)}
+function h(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function inr(n){return "₹"+new Intl.NumberFormat("en-IN").format(n)}
+function plural(n){return n+(n===1?" test":" tests")}
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function goTo(el){el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})}
+
+var sel=new Set(),cat="All",q="";
+var list=$("#list"),selList=$("#selList");
+var details=$("#details"),form=$("#form"),done=$("#done");
+
+$("#labName").textContent=LAB.name;
+$("#labSub").textContent=LAB.tagline;
+$("#labNote").textContent=LAB.note;
+$("#footTxt").textContent=LAB.name+" · Prices shown are MRP per test.";
+
+/* category select */
+var catSel=$("#catSel");
+["All tests"].concat(CATS).forEach(function(c){
+  var o=h("option",null,c);o.value=c==="All tests"?"All":c;catSel.append(o);
+});
+catSel.addEventListener("change",function(){cat=catSel.value;renderList()});
+$("#search").addEventListener("input",function(e){q=e.target.value;renderList()});
+var LIMIT=22,showAll=false;
+$("#moreBtn").addEventListener("click",function(){showAll=true;renderList()});
+
+/* test list */
+function paintRow(row,on){
+  row.classList.toggle("on",on);
+  var b=row.querySelector(".add");
+  b.textContent=on?"✓ Added":"Add";
+  b.setAttribute("aria-pressed",on?"true":"false");
+}
+function makeRow(t){
+  var row=h("div","test");row.dataset.id=t.id;
+  var main=h("div","t-main");
+  main.append(h("div","t-name",t.name));
+  var sub=h("div","t-sub");
+  sub.append(h("span","t-price",inr(t.price)));
+  if(t.note)sub.append(h("span","t-meta",t.note));
+  main.append(sub);
+  var b=h("button","add");b.type="button";
+  b.setAttribute("aria-label",t.name);
+  row.append(main,b);
+  paintRow(row,sel.has(t.id));
+  return row;
+}
+function renderList(){
+  var ql=q.trim().toLowerCase();
+  var rows=TESTS.filter(function(t){
+    return (cat==="All"||t.cat===cat)&&(!ql||t.name.toLowerCase().indexOf(ql)>=0||t.cat.toLowerCase().indexOf(ql)>=0);
+  });
+  var limited=cat==="All"&&!ql&&!showAll&&rows.length>LIMIT;
+  var vis=limited?rows.slice(0,LIMIT):rows;
+  list.replaceChildren();
+  vis.forEach(function(t){list.append(makeRow(t))});
+  $("#emptyList").hidden=rows.length>0;
+  var more=$("#moreBtn");
+  more.hidden=!limited;
+  more.textContent="Show all "+rows.length+" tests";
+  $("#shown").textContent=(limited?"Showing the most asked "+vis.length+" of "+rows.length+" tests":"Showing "+plural(rows.length))+" · prices are MRP";
+}
+list.addEventListener("click",function(e){
+  var row=e.target.closest(".test");if(!row)return;
+  var id=row.dataset.id;
+  if(sel.has(id))sel.delete(id);else sel.add(id);
+  paintRow(row,sel.has(id));
+  renderSummary();
+});
+
+/* total */
+function chosen(){return TESTS.filter(function(t){return sel.has(t.id)})}
+function totalOf(items){return items.reduce(function(s,t){return s+t.price},0)}
+function renderSummary(){
+  var items=chosen(),total=totalOf(items);
+  selList.replaceChildren();
+  items.forEach(function(t){
+    var li=h("li");
+    li.append(h("span","n",t.name),h("span","p",inr(t.price)));
+    var rm=h("button","rm","Remove");rm.type="button";rm.dataset.id=t.id;
+    rm.setAttribute("aria-label","Remove "+t.name);
+    li.append(rm);selList.append(li);
+  });
+  $("#noSel").hidden=items.length>0;
+  $("#count").textContent=items.length;
+  $("#total").textContent=inr(total);
+  $("#toDetails").disabled=items.length===0;
+  $("#clearAll").disabled=items.length===0;
+  $("#subSum").textContent=items.length?plural(items.length)+" · Total "+inr(total):"No test selected yet";
+  $("#dock").hidden=items.length===0||!done.hidden;
+  document.body.classList.toggle("has-dock",!$("#dock").hidden);
+  $("#dockL").textContent=plural(items.length)+" selected";
+  $("#dockT").textContent=inr(total);
+  if(items.length)$("#e-tests").textContent="";
+}
+selList.addEventListener("click",function(e){
+  var b=e.target.closest(".rm");if(!b)return;
+  sel.delete(b.dataset.id);
+  var row=list.querySelector('[data-id="'+b.dataset.id+'"]');
+  if(row)paintRow(row,false);
+  renderSummary();
+});
+$("#clearAll").addEventListener("click",function(){
+  sel.clear();renderList();renderSummary();
+});
+$("#toDetails").addEventListener("click",function(){goTo(details)});
+$("#dockGo").addEventListener("click",function(){goTo(details)});
+
+/* form defaults */
+function ymd(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+var now=new Date(),tomorrow=new Date(now.getTime()+864e5);
+var fdate=$("#fdate");fdate.min=ymd(now);fdate.value=ymd(tomorrow);
+var fslot=$("#fslot");
+LAB.slots.forEach(function(s){var o=h("option",null,s);o.value=s;fslot.append(o)});
+
+/* validation */
+function cleanMobile(v){
+  var d=String(v).replace(/\D/g,"");
+  if(d.length===12&&d.indexOf("91")===0)d=d.slice(2);
+  if(d.length===11&&d.charAt(0)==="0")d=d.slice(1);
+  return d;
+}
+function setErr(id,msg,field){
+  $("#"+id).textContent=msg||"";
+  if(field){
+    if(field.classList&&field.classList.contains("phone")){if(msg)field.setAttribute("data-invalid","true");else field.removeAttribute("data-invalid")}
+    else field.setAttribute("aria-invalid",msg?"true":"false");
+  }
+  return !msg;
+}
+function validate(){
+  var firstBad=null;
+  function mark(ok,el){if(!ok&&!firstBad)firstBad=el}
+  var name=$("#fname"),mob=$("#fmobile"),addr=$("#faddr");
+  mark(setErr("e-name",name.value.trim().length<2?"Please enter your full name.":"",name),name);
+  var m=cleanMobile(mob.value);
+  mark(setErr("e-mobile",/^[6-9]\d{9}$/.test(m)?"":"Please enter a valid 10-digit mobile number.",$("#phoneBox")),mob);
+  mark(setErr("e-addr",addr.value.trim().length<8?"Please enter your full address with area and PIN code.":"",addr),addr);
+  var dv=fdate.value;
+  mark(setErr("e-date",!dv||dv<ymd(new Date())?"Please choose today or a later date.":"",fdate),fdate);
+  var noTests=sel.size===0;
+  setErr("e-tests",noTests?"Please choose at least one test in step 1.":"");
+  return {ok:!firstBad&&!noTests,firstBad:firstBad,noTests:noTests,mobile:m};
+}
+
+/* booking */
+function makeRef(){
+  var s=Math.floor(Math.random()*1679616).toString(36).toUpperCase();
+  while(s.length<4)s="0"+s;
+  return LAB.code+"-"+String(now.getDate()).padStart(2,"0")+String(now.getMonth()+1).padStart(2,"0")+"-"+s;
+}
+function dateText(v){
+  var d=new Date(v+"T00:00:00");
+  return d.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+}
+function buildText(b){
+  var L=["New test booking - "+LAB.name,"Ref: "+b.ref,"","Name: "+b.name,"Mobile: +91 "+b.mobile,"Address: "+b.addr,"Sample: "+b.mode,"Date: "+b.dateText+", "+b.slot,"","Tests:"];
+  b.items.forEach(function(t,i){L.push((i+1)+". "+t.name+" - "+inr(t.price))});
+  L.push("","Total (MRP): "+inr(b.total));
+  return L.join("\n");
+}
+function row(dl,k,v){dl.append(h("dt",null,k),h("dd",null,v))}
+
+function showDone(b,url){
+  done.replaceChildren();
+  var head=h("div","done-head");
+  head.append(h("h3",null,"Thank you, "+b.name.split(" ")[0]),h("span","ref",b.ref));
+  done.append(head);
+  done.append(h("p",null,"WhatsApp should have opened with your booking message. Please press Send there to complete your booking."));
+  done.append(h("p",null,"হোয়াটসঅ্যাপ খুললে শুধু Send চাপুন, তাহলেই বুকিং ল্যাবে পৌঁছাবে।"));
+  var dl=h("dl","dl");
+  row(dl,"Date and time",b.dateText+", "+b.slot);
+  row(dl,"Tests",b.items.map(function(t){return t.name}).join(", "));
+  row(dl,"Total (MRP)",inr(b.total));
+  done.append(dl);
+  var again=h("a","link","WhatsApp did not open? Tap here");
+  again.href=url;again.target="_blank";again.rel="noopener";
+  var acts=h("div","acts");
+  var nb=h("button","ghost","Make another booking");nb.type="button";
+  acts.append(nb);
+  done.append(again,acts);
+  nb.addEventListener("click",function(){
+    sel.clear();renderList();renderSummary();
+    done.hidden=true;form.hidden=false;renderSummary();goTo($("#h-tests"));
+  });
+  form.hidden=true;done.hidden=false;
+  $("#dock").hidden=true;document.body.classList.remove("has-dock");
+  goTo(details);
+}
+
+var bookBtn=$("#bookBtn");
+bookBtn.addEventListener("click",function(e){
+  var v=validate();
+  if(!v.ok){
+    e.preventDefault();
+    if(v.firstBad)v.firstBad.focus();
+    else if(v.noTests)goTo($("#h-tests"));
+    return;
+  }
+  var items=chosen();
+  var b={
+    ref:makeRef(),
+    name:$("#fname").value.trim(),
+    mobile:v.mobile,
+    addr:$("#faddr").value.trim(),
+    mode:form.querySelector('input[name="mode"]:checked').value,
+    dateText:dateText(fdate.value),
+    slot:fslot.value,
+    items:items,
+    total:totalOf(items)
+  };
+  var url="https://wa.me/"+LAB.whatsapp+"?text="+encodeURIComponent(buildText(b));
+  bookBtn.href=url;
+  setTimeout(function(){showDone(b,url)},400);
+});
+form.addEventListener("submit",function(e){e.preventDefault();bookBtn.click()});
+
+$("#helpBtn").href="https://wa.me/"+LAB.whatsapp+"?text="+encodeURIComponent(LAB.helpMsg);
+renderList();
+renderSummary();
+})();
+</script>
+
+</body></html>
